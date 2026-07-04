@@ -333,4 +333,21 @@
 
         let polaGacorText = `pola gacor (${activeGameName})\n` + polaLines.join('\n');
 
-        resultDiv.innerText = `${jamGacor
+        resultDiv.innerText = `${jamGacorText}\n\n${polaGacorText}`;
+        resultDiv.style.display = 'block';
+        copyBtn.style.display = 'block';
+    }
+
+    function copyToClipboard(side) {
+        const targetId = (side === 'left') ? 'resultLeft' : 'resultRight';
+        const text = document.getElementById(targetId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert(`Pola Kolom ${side === 'left' ? 'Kiri' : 'Kanan'} berhasil disalin!`);
+        }).catch(err => {
+            alert("Gagal menyalin teks: ", err);
+        });
+    }
+</script>
+
+</body>
+</html>
