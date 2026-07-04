@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Dual Pattern & Hour Generator</title>
+    <style>
+        /* --- PREMIUM MODERN UI DESIGN --- */
+        body {
+            font-family: 'Poppins', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at center, #1e1b29 0%, #0f0e15 100%);
+            color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .main-wrapper {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            max-width: 1050px;
+            padding: 20px 0;
+        }
+        
+        /* Efek Glassmorphism Kartu */
+        .column {
+            flex: 1;
+            background: rgba(30, 27, 42, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover lift-up effect */
+        .column:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Border Glow Atas */
+        .column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+        }
+        .column.left-side::before { background: linear-gradient(90deg, #00ff87, #60efff); }
+        .column.right-side::before { background: linear-gradient(90deg, #ffaa00, #ff5500); }
+
+        h2 {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .left-side h2 {
+            color: #00ff87;
+            text-shadow: 0 0 15px rgba(0, 255, 135, 0.3);
+        }
+        .right-side h2 {
+            color: #ffaa00;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Style Kolom Input */
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(15, 14, 21, 0.6);
+            color: #ffffff;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            background: rgba(15, 14, 21, 0.9);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+        .left-side input:focus { border-color: #00ff87; }
+        .right-side input:focus { border-color: #ffaa00; }
+
+        /* Tombol Utama Premium Gradient */
+        button.btn-gen {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #0f0e15;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .left-side button.btn-gen { 
+            background: linear-gradient(135deg, #00ff87 0%, #60efff 100%); 
+        }
+        .left-side button.btn-gen:hover { 
+            box-shadow: 0 0 20px rgba(0, 255, 135, 0.6);
+            transform: scale(1.01);
+        }
+        
+        .right-side button.btn-gen { 
+            background: linear-gradient(135deg, #ffaa00 0%, #ff5500 100%); 
+        }
+        .right-side button.btn-gen:hover { 
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.6);
+            transform: scale(1.01);
+        }
+
+        /* Desain Box Hasil Copy-paste friendly */
+        .result-box {
+            margin-top: 25px;
+            background: rgba(10, 9, 15, 0.8);
+            padding: 22px;
+            border-radius: 12px;
+            display: none;
+            white-space: pre-line;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 15px;
+            line-height: 1.7;
+            flex-grow: 1;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .left-side .result-box { border-left: 4px solid #00ff87; color: #e2e8f0; }
+        .right-side .result-box { border-left: 4px solid #ffaa00; color: #e2e8f0; }
+
+        /* Tombol Salin Minimalis Modern */
+        .btn-copy {
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #e5e7eb;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        /* Responsif untuk layar smartphone */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .main-wrapper { flex-direction: column; gap: 20px; }
+            .column { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="column left-side">
+        <h2>🟢 Kolom Kiri</h2>
+        <div class="form-group">
+            <label for="gameLeft">Cari/Pilih Game:</label>
+            <input list="games" id="gameLeft" placeholder="Ketik nama game...">
+        </div>
+        <button class="btn-gen" onclick="generatePattern('left')">GENERATE KIRI</button>
+        <div id="resultLeft" class="result-box"></div>
+        <button id="copyLeft" class="btn-copy" style="display:none;" onclick="copyToClipboard('left')">📋 Salin Teks Kiri</button>
+    </div>
+
+    <div class="column right-side">
+        <h2>🟡 Kolom Kanan</h2>
+        <div class="form-group">
+            <label for="gameRight">Cari/Pilih Game:</label>
+            <input list="games" id="gameRight" placeholder="Ketik nama game...">
+        </div>
+        <button class="btn-gen" onclick="generatePattern('right')">GENERATE KANAN</button>
+        <div id="resultRight" class="result-box"></div>
+        <button id="copyRight" class="btn-copy" style="display:none;" onclick="copyToClipboard('right')">📋 Salin Teks Kanan</button>
+    </div>
+</div>
+
+<datalist id="games">
+    <option value="Mahjong Ways">
+    <option value="Mahjong Ways 2">
+    <option value="Lucky Neko">
+    <option value="Treasures of Aztec">
+    <option value="Wild Bandito">
+    <option value="Wild Bounty Showdown">
+    <option value="Fortune Tiger">
+    <option value="Fortune Ox">
+    <option value="Fortune Rabbit">
+    <option value="Fortune Mouse">
+    <option value="Piggy Gold">
+    <option value="Dragon Hatch">
+    <option value="Dragon Hatch 2">
+    <option value="Medusa 2: The Quest of Perseus">
+    <option value="Asgardian Rising">
+    <option value="Phoenix Rises">
+    <option value="Hotpot">
+    <option value="Caishen Wins">
+    <option value="Ganesha Fortune">
+    <option value="Dream of Macau">
+    <option value="Circus Delight">
+    <option value="Mayan Destiny">
+    <option value="Grimms' Bounty: Hansel & Gretel">
+    <option value="Shark Bounty">
+    <option value="Kraken Gold Rush">
+    <option value="Wings of Iguazu">
+</datalist>
+
+<script>
+    const autoActions = ["AUTO TURBO OFF", "AUTO SPIN", "AUTO TURBO ON"];
+    const manualActions = ["MANUAL SPIN", "ANALISA MODE", "RESET SEBENTAR", "MANUAL TURBO OFF"];
+    const autoNumbers = [10, 30, 50];
+
+    function padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    function formatTime(date) {
+        return `${padZero(date.getHours())}.${padZero(date.getMinutes())}`;
+    }
+
+    function generatePattern(side) {
+        const gameLeft = document.getElementById('gameLeft').value.trim();
+        const gameRight = document.getElementById('gameRight').value.trim();
+
+        if (side === 'left') {
+            if (!gameLeft) {
+                alert("Silahkan pilih nama game untuk kolom Kiri!");
+                return;
+            }
+            if (gameLeft.toLowerCase() === gameRight.toLowerCase()) {
+                alert(`Gagal! Game "${gameLeft}" sedang digunakan di Kolom Kanan. Silahkan ganti game di salah satu kolom terlebih dahulu!`);
+                return;
+            }
+        } else {
+            if (!gameRight) {
+                alert("Silahkan pilih nama game untuk kolom Kanan!");
+                return;
+            }
+            if (gameRight.toLowerCase() === gameLeft.toLowerCase()) {
+                alert(`Gagal! Game "${gameRight}" sedang digunakan di Kolom Kiri. Silahkan ganti game di salah satu kolom terlebih dahulu!`);
+                return;
+            }
+        }
+
+        const activeGameName = (side === 'left') ? gameLeft : gameRight;
+        const resultDiv = document.getElementById(side === 'left' ? 'resultLeft' : 'resultRight');
+        const copyBtn = document.getElementById(side === 'left' ? 'copyLeft' : 'copyRight');
+
+        // --- LOGIKA JAM BERTAHAP ---
+        let now = new Date();
+        let minStartOffset = -60;
+        let maxStartOffset = -30;
+        let randomStartOffset = Math.floor(Math.random() * (maxStartOffset - minStartOffset + 1)) + minStartOffset;
+        
+        let timeStart1 = new Date(now.getTime() + (randomStartOffset * 60 * 1000));
+        
+        let duration1 = Math.floor(Math.random() * 11) + 30; 
+        let timeEnd1 = new Date(timeStart1.getTime() + (duration1 * 60 * 1000));
+        
+        let gap1 = Math.floor(Math.random() * 11) + 5;
+        let timeStart2 = new Date(timeEnd1.getTime() + (gap1 * 60 * 1000));
+        
+        let duration2 = Math.floor(Math.random() * 11) + 30;
+        let timeEnd2 = new Date(timeStart2.getTime() + (duration2 * 60 * 1000));
+        
+        let gap2 = Math.floor(Math.random() * 8) + 3;
+        let timeStart3 = new Date(timeEnd2.getTime() + (gap2 * 60 * 1000));
+        
+        let duration3 = Math.floor(Math.random() * 11) + 30;
+        let timeEnd3 = new Date(timeStart3.getTime() + (duration3 * 60 * 1000));
+
+        let jamGacorText = `jam gacor (${activeGameName})\n` +
+            `⏰ ${formatTime(timeStart1)} - ${formatTime(timeEnd1)}\n` +
+            `⏰ ${formatTime(timeStart2)} - ${formatTime(timeEnd2)}\n` +
+            `⏰ ${formatTime(timeStart3)} - ${formatTime(timeEnd3)}`;
+
+        // --- LOGIKA POLA ACAK ---
+        let polaLines = [];
+        let totalRows = Math.floor(Math.random() * 3) + 5; 
+
+        for (let i = 0; i < totalRows; i++) {
+            let isAuto = Math.random() < 0.5;
+            let count, action;
+
+            if (isAuto) {
+                count = autoNumbers[Math.floor(Math.random() * autoNumbers.length)];
+                action = autoActions[Math.floor(Math.random() * autoActions.length)];
+            } else {
+                count = Math.floor(Math.random() * 38) + 8; 
+                action = manualActions[Math.floor(Math.random() * manualActions.length)];
+            }
+            
+            polaLines.push(`${count}X ${action}`);
+        }
+
+        let polaGacorText = `pola gacor (${activeGameName})\n` + polaLines.join('\n');
+
+        resultDiv.innerText = `${jamGacorText}\n\n${polaGacorText}`;
+        resultDiv.style.display = 'block';
+        copyBtn.style.display = 'block';
+    }
+
+    function copyToClipboard(side) {
+        const targetId = (side === 'left') ? 'resultLeft' : 'resultRight';
+        const text = document.getElementById(targetId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert(`Pola Kolom ${side === 'left' ? 'Kiri' : 'Kanan'} berhasil disalin!`);
+        }).catch(err => {
+            alert("Gagal menyalin teks: ", err);
+        });
+    }
+</script>
+
+</body>
+</html>
